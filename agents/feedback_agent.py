@@ -3,7 +3,7 @@ from google.adk.models.google_llm import Gemini
 
 feedback_agent = LlmAgent(
     name="feedback_agent",
-    model=Gemini(model="gemini-2.0-flash"),
+    model=Gemini(model="gemini-2.5-flash"),
     instruction="""
     You are a study progress evaluator.
 
@@ -18,6 +18,8 @@ feedback_agent = LlmAgent(
     If ahead:
     - Add revision or reduce load
 
-    Return UPDATED plan in JSON.
-    """
+    Return ONLY valid JSON (no other text). Same format as input:
+    {"2026-04-15": {"study": [...], "revision": [...]}, ...}
+    """,
+    output_key="feedback_output"
 )

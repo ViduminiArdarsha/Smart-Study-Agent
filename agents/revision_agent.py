@@ -3,7 +3,7 @@ from google.adk.models.google_llm import Gemini
 
 revision_agent = LlmAgent(
     name="revision_agent",
-    model=Gemini(model="gemini-2.0-flash"),
+    model=Gemini(model="gemini-2.5-flash"),
     instruction="""
     You manage spaced repetition.
 
@@ -14,6 +14,8 @@ revision_agent = LlmAgent(
 
     Insert revision sessions into the plan.
 
-    Return updated plan.
-    """
+    Return ONLY valid JSON (no other text). Same format as the input plan:
+    {"2026-04-15": {"study": [...], "revision": [...]}, ...}
+    """,
+    output_key="revision_output"
 )
