@@ -155,16 +155,13 @@ from agents.planner_agent import planner_agent
 from agents.feedback_agent import feedback_agent
 from agents.revision_agent import revision_agent
 
-from tools.syllabus_parser import parse_syllabus
-from tools.scheduler import create_study_plan
-
 load_dotenv()
 
 # ===== Part 2: Configuration =====
 APP_NAME = "smart_study_planner"
 USER_ID = "student_1"
 SESSION_ID = "study-session-1"
-GEMINI_MODEL = os.getenv("GEMINI_MODEL", "gemini-2.5-flash")
+GEMINI_MODEL = "gemini-3-flash-preview"
 
 logging.basicConfig(level=logging.getLevelName(os.getenv("LOG_LEVEL", "ERROR")))
 log = logging.getLogger(__name__)
@@ -279,18 +276,14 @@ async def run_study_pipeline(
         state={}
     )
     
-    # Parse topics and create initial plan
-    topics = parse_syllabus(syllabus_text)
-    initial_plan = create_study_plan(topics, exam_date)
-    
+    # Let the planner dynamically parse and create the initial plan via tools
     # Build pipeline prompt
     progress_text = json.dumps(progress) if progress else "{}"
     pipeline_prompt = (
-        f"Create a study plan for these topics: {topics}\n"
+        f"Create a study plan for these topics: {syllabus_text}\n"
         f"Exam date: {exam_date}\n"
-        f"Initial schedule: {initial_plan}\n"
         f"Student progress: {progress_text}\n\n"
-        f"Generate the complete plan in JSON format."
+        f"Generate the complete plan in JSON format. Use tools to parse the syllabus and create the initial plan first, then refine it."
     )
     
     print("\n🚀 Starting Study Planner Pipeline...")

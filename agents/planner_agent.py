@@ -1,9 +1,9 @@
 from google.adk.agents import LlmAgent
-from google.adk.models.google_llm import Gemini
+
 
 planner_agent = LlmAgent(
     name="planner_agent",
-    model=Gemini(model="gemini-2.5-flash"),
+    model="gemini-3-flash-preview",
     instruction="""
     You are a smart study planner.
 
